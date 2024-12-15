@@ -1,5 +1,6 @@
 import DFS.*;
 import Djikstra.*;
+import Heap.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.Random;
 
 class Main {
     public static void main(String[] args) {
-        //testDFS();
+        testDFS();
         testDjikstra();
+        testHeap();
     }
 
     public static void testDFS(){
@@ -116,6 +118,26 @@ class Main {
         testLargeGraphPerformance();
     }
 
+    public static void testHeap(){
+        // Тест 1: Добавление элементов и удаление минимального элемента
+        testInsertDeleteMin(1000); // Тест с 1000 элементами
+        testInsertDeleteMin(10000); // Тест с 10,000 элементами
+        testInsertDeleteMin(100000); // Тест с 100,000 элементами
+        testInsertDeleteMin(1000000); // Тест с 1,000,000 элементами
+
+        // Тест 2: Уменьшение ключа
+        testDecreaseKey(1000); // Тест с 1000 элементами
+        testDecreaseKey(10000); // Тест с 10,000 элементами
+        testDecreaseKey(100000); // Тест с 100,000 элементами
+        testDecreaseKey(1000000); // Тест с 1,000,000 элементами
+
+        // Тест 3: Увеличение ключа
+        testIncreaseKey(1000); // Тест с 1000 элементами
+        testIncreaseKey(10000); // Тест с 10,000 элементами
+        testIncreaseKey(100000); // Тест с 100,000 элементами
+        testIncreaseKey(1000000); // Тест с 1,000,000 элементами
+    }
+
     public static void testLargeGraphPerformance() {
         for(int nodeCount = 1000; nodeCount <= 1000000; nodeCount*=10) {
             GraphWeighted graph = new GraphWeighted();
@@ -139,4 +161,65 @@ class Main {
         }
     }
 
+    public static void testInsertDeleteMin(int numElements) {
+        System.out.println("Test: Insert and Delete Min for " + numElements + " elements");
+        MinHeap heap = new MinHeap(numElements);
+        Random rand = new Random();
+
+        // Измеряем время вставки
+        long startTime = System.nanoTime();
+        for (int i = 0; i < numElements; i++) {
+            heap.insert(rand.nextInt(10000)); // Вставляем случайное число
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Time for insert: " + (endTime - startTime) / 1000000 + " ms");
+
+        // Измеряем время удаления минимального элемента
+        startTime = System.nanoTime();
+        for (int i = 0; i < numElements; i++) {
+            heap.deleteMin(); // Удаляем минимальный элемент
+        }
+        endTime = System.nanoTime();
+        System.out.println("Time for deleteMin: " + (endTime - startTime) / 1000000 + " ms");
+    }
+
+    // Метод для тестирования уменьшения ключа
+    public static void testDecreaseKey(int numElements) {
+        System.out.println("Test: Decrease Key for " + numElements + " elements");
+        MinHeap heap = new MinHeap(numElements);
+        Random rand = new Random();
+
+        // Вставка элементов
+        for (int i = 0; i < numElements; i++) {
+            heap.insert(rand.nextInt(10000));
+        }
+
+        // Измеряем время уменьшения ключа
+        long startTime = System.nanoTime();
+        for (int i = 0; i < numElements; i++) {
+            heap.decreaseKey(rand.nextInt(numElements), rand.nextInt(10000)); // Уменьшаем случайный элемент
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Time for decreaseKey: " + (endTime - startTime) / 1000000 + " ms");
+    }
+
+    // Метод для тестирования увеличения ключа
+    public static void testIncreaseKey(int numElements) {
+        System.out.println("Test: Increase Key for " + numElements + " elements");
+        MinHeap heap = new MinHeap(numElements);
+        Random rand = new Random();
+
+        // Вставка элементов
+        for (int i = 0; i < numElements; i++) {
+            heap.insert(rand.nextInt(10000));
+        }
+
+        // Измеряем время увеличения ключа
+        long startTime = System.nanoTime();
+        for (int i = 0; i < numElements; i++) {
+            heap.increaseKey(rand.nextInt(numElements), rand.nextInt(10000)); // Увеличиваем случайный элемент
+        }
+        long endTime = System.nanoTime();
+        System.out.println("Time for increaseKey: " + (endTime - startTime) / 1000000 + " ms");
+    }
 }
